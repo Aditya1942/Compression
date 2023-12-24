@@ -1,4 +1,4 @@
-# textcompression
+# Compression
 
 To install dependencies:
 
