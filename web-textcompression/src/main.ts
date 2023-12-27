@@ -1,4 +1,4 @@
-import TextCompress from "../../TextCompress.ts";
+import TextCompress from "../../src/TextCompress.ts";
 
 const text2 = `Reliability at massive scale is one of the biggest challenges we
 face at Amazon.com, one of the largest e-commerce operations in
