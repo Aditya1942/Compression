@@ -1,8 +1,7 @@
-type IWord = {word: string, newLine?: boolean};
 export default class TextCompress
 {
   text: string;
-  words: IWord[] = [];
+  words: string[] = [];
   bufferLength = 5;
 
   constructor(textFile: string)
@@ -10,56 +9,20 @@ export default class TextCompress
     this.text = textFile;
   }
 
-  insertWord(word: string, newLine: boolean)
+  toWords()
   {
-    this.words.push({
-      word: word,
-      ...newLine && {
-        newLine: newLine
-      }
-    });
+    const text = this.text;
+    this.words = text.split(" ").map(value => value.split("\n")).flat();
   }
 
-  search(str: string, start: number, end?: number)
+  search(word: string)
   {
-    return this.text.substring(start, end).search(str);
-  }
 
-  getBufferStr(index: number)
-  {
-    const bufferArr: string[] = [];
-
-    for(let i = 0; i < this.bufferLength; i++)
-    {
-      const start = index - i;
-      const end = start + this.bufferLength;
-      const subStr = this.text.substring(start, end);
-      bufferArr.push(subStr);
-
-      console.log("===i", i, index);
-    }
-    console.log("%c===break", "color:red", bufferArr);
   }
 
   compress()
   {
-    const text = this.text;
-    const len = text.length;
-    let bufferStr = "";
-    let start = 0;
-
-    const varMap = new Map<string, string>();
-    const bufferArr: string[] = [];
-
-    for(let i = 0; i < len; i++)
-    {
-      const char = text?.at(i);
-      bufferStr += char;
-      this.getBufferStr(i);
-    }
-    console.log("===bufferStr", bufferArr);
-    console.log("===varMap", varMap, bufferArr, this.words);
+    this.toWords();
+    const words = this.words;
   }
 }
-
-
