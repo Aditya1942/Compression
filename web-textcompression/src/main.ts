@@ -9,7 +9,7 @@ console.log("===compressed", compressed);
 console.log("===decompressed", decompressed);
 console.log("===isEqual",
   {
-    text,
+    compressed,
     decompressed,
     equal: text === decompressed
   }

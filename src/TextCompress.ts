@@ -73,7 +73,6 @@ export default class TextCompress
       else if(start >= 0 && char === "}")
       {
         const [sIndex, eIndex] = _text.substring(start + 2, i).split(":");
-        console.log("===buffer", sIndex, eIndex);
         newText += _text.substring(+sIndex, +eIndex);
         start = -1;
       }
