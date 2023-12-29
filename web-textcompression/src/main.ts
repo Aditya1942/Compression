@@ -1,16 +1,16 @@
-import text from "../../public/text.txt?raw";
-import TextCompress from "../../src/TextCompress.ts";
+import text from "../../public/dev.txt?raw";
+import LZWCompress from "../../src/LZWCompress.ts";
 
-const textCompress = new TextCompress();
-const compressed = textCompress.compress(text);
-const decompressed = textCompress.decompress(compressed);
+const compressor = new LZWCompress();
+const compressed = compressor.compress(text);
+const decompressed = compressor.decompress(compressed);
 
-console.log("===compressed", compressed);
-console.log("===decompressed", decompressed);
-console.log("===isEqual",
-  {
-    compressed,
-    decompressed,
-    equal: text === decompressed
-  }
-);
+// console.log("===compressed", compressed);
+// console.log("===decompressed", decompressed);
+// console.log("===isEqual",
+//   {
+//     compressed,
+//     decompressed,
+//     equal: text === decompressed
+//   }
+// );
