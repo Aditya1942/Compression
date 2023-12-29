@@ -1,11 +1,9 @@
+import BaseCompress from "./base/BaseCompress.ts";
+
 type IWord = {text: string, newLine?: boolean};
-export default class TextCompress
+export default class TextCompress implements BaseCompress
 {
   words: IWord[] = [];
-
-  constructor()
-  {
-  }
 
   compress(_text: string)
   {
