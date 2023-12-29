@@ -43,7 +43,7 @@ export default class TextCompress
           if(searchInStart >= 0)
           {
             const start = searchInStart;
-            const end = searchInStart >= 0 ? searchInStart + (buffer.length - 1) : -1;
+            const end = searchInStart >= 0 ? searchInStart + (buffer.length) : -1;
             const varName = `$\{${start}:${end}}`;
             text = previousText + endText.replaceAll(buffer, varName);
           }
@@ -56,6 +56,33 @@ export default class TextCompress
       i++;
     }
     return text;
+  }
+
+  decompress(_text: string)
+  {
+    let newText = "";
+    const length = _text.length;
+    let start = -1;
+    for(let i = 0; i < length; i++)
+    {
+      const char = _text.at(i);
+      if(char === "$" && _text.at(i + 1) === "{")
+      {
+        start = i;
+      }
+      else if(start >= 0 && char === "}")
+      {
+        const [sIndex, eIndex] = _text.substring(start + 2, i).split(":");
+        console.log("===buffer", sIndex, eIndex);
+        newText += _text.substring(+sIndex, +eIndex);
+        start = -1;
+      }
+      else if(start === -1)
+      {
+        newText += char;
+      }
+    }
+    return newText;
   }
 
   private toWords(text: string)

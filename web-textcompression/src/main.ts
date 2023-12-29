@@ -20,5 +20,14 @@ Reliability at massive`;
 
 const textCompress = new TextCompress();
 const compressed = textCompress.compress(text2);
+const decompressed = textCompress.decompress(compressed);
 
 console.log("===compressed", compressed);
+console.log("===decompressed", decompressed);
+console.log("===isEqual",
+  {
+    text2,
+    decompressed,
+    equal: text2 === decompressed
+  }
+);
