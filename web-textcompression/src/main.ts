@@ -18,8 +18,7 @@ Reliability at massive
 
 Reliability at massive`;
 
-const textCompress = new TextCompress(text);
-textCompress.compress();
-//
-// const search = text.search("Reliability at massive \\n\\nRe");
-// console.log("===search", search);
+const textCompress = new TextCompress();
+const compressed = textCompress.compress(text2);
+
+console.log("===compressed", compressed);

@@ -1,18 +1,65 @@
 type IWord = {text: string, newLine?: boolean};
 export default class TextCompress
 {
-  text: string;
   words: IWord[] = [];
 
-  constructor(textFile: string)
+  constructor()
   {
-    this.text = textFile;
-    this.toWords();
   }
 
-  toWords()
+  compress(_text: string)
   {
-    const text = this.text;
+    function match(str: string, startIndex: number = 0)
+    {
+      return text.substring(startIndex).match(str);
+    }
+
+    this.toWords(_text);
+    const words = this.words;
+    let text = _text.slice();
+    const len = words.length;
+    let i = 0;
+    let buffer = "";
+    let charCount = 0;
+    while(i < len)
+    {
+      const word = words[i].text;
+      buffer = buffer === "" ? word : buffer;
+      const search = buffer ? match(buffer, charCount) : undefined;
+      if(search)
+      {
+        charCount = this.charCount(words, i);
+        const mergedWord = this.mergeTwoWords(buffer, words.at(i + 1)?.text);
+        const searchMerged = match(mergedWord, charCount);
+        if(searchMerged)
+        {
+          buffer = mergedWord;
+        }
+        else
+        {
+          const previousText = text.substring(0, charCount);
+          const endText = text.substring(charCount);
+          const searchInStart = previousText.search(buffer);
+          if(searchInStart >= 0)
+          {
+            const start = searchInStart;
+            const end = searchInStart >= 0 ? searchInStart + (buffer.length - 1) : -1;
+            const varName = `$\{${start}:${end}}`;
+            text = previousText + endText.replaceAll(buffer, varName);
+          }
+          buffer = "";
+        }
+      }
+      else
+      {
+      }
+      i++;
+    }
+    return text;
+  }
+
+  private toWords(text: string)
+  {
     const words = [] as IWord[];
     let word = "";
     const len = text.length;
@@ -45,49 +92,19 @@ export default class TextCompress
     this.words = words;
   }
 
-  search(word: string)
+  private charCount(words: IWord[], index: number)
   {
-
-  }
-
-  compress()
-  {
-    const words = this.words;
-    const text = this.text;
-    const len = words.length;
-    let newText = "";
-    let i = 0;
-    let buffer = "";
-    let charCount = 0;
-    while(i < len)
+    let count = 0;
+    for(let i = 0; i <= index; i++)
     {
-      const word = words[i].text;
-      charCount += this.charCount(words, i);
-      buffer = buffer === "" ? word : buffer;
-      const search = this.text.search(buffer);
-      console.log("===%c search", "color:red;background-color:grey",
-        {
-          words,
-          word,
-          search,
-          buffer,
-          text
-        }
-      );
-
-      i++;
+      const word = words[i];
+      const isLastWord = i === words.length - 1;
+      count += word.text.length + (isLastWord ? 0 : 1);
     }
-    console.log("===newText", newText, charCount, text.length);
+    return count;
   }
 
-  charCount(words: IWord[], index: number)
-  {
-    const word = words[index];
-    const isLastWord = index === words.length - 1;
-    return word.text.length + (isLastWord ? 0 : 1);
-  }
-
-  mergeTwoWords(word1: string, word2: string)
+  private mergeTwoWords(word1: string, word2?: string)
   {
     let str = "";
     if(word1 !== "")
@@ -97,10 +114,6 @@ export default class TextCompress
     if(word2 !== "")
     {
       str = str + word2;
-    }
-    else
-    {
-      str = str + "\n";
     }
     return str;
   }
