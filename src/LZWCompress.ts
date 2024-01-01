@@ -34,18 +34,33 @@ export default class LZWCompress implements BaseCompress
     {
       compressed.push(this.charToCodeMap.get(word) as number);
     }
-    return JSON.stringify(compressed);
+    return compressed.toString();
   }
 
   decompress(text: string): string
   {
     this.refreshMap();
-    const newText = "";
-    const array = JSON.parse(text);
-    array.forEach((code: number) =>
+    const array = text.split(",");
+    const len = array.length;
+    let word = this.codeToCharMap.get(parseInt(array[0])) as string;
+    let newText = word;
+    for(let i = 1; i < len; i++)
     {
-      console.log(code, this.codeToCharMap.get(code));
-    });
+      const code = parseInt(array[i]);
+      let newWord = "";
+      if(this.codeToCharMap.get(code))
+      {
+        newWord = this.codeToCharMap.get(code) as string;
+      }
+      else if(code === this.codeToCharMap.size)
+      {
+        newWord = word + word[0];
+      }
+      newText += newWord;
+      this.codeToCharMap.set(this.codeToCharMap.size, word + newWord[0]);
+      word = newWord;
+    }
+
     return newText;
   }
 

@@ -1,4 +1,4 @@
-import text from "../../public/dev.txt?raw";
+import text from "../../public/test.txt?raw";
 import LZWCompress from "../../src/LZWCompress.ts";
 
 const compressor = new LZWCompress();
@@ -7,10 +7,11 @@ const decompressed = compressor.decompress(compressed);
 
 console.log("===compressed", compressed);
 console.log("===decompressed", decompressed);
-// console.log("===isEqual",
-//   {
-//     compressed,
-//     decompressed,
-//     equal: text === decompressed
-//   }
-// );
+console.log("===isEqual",
+  {
+    text: text,
+    compressed,
+    decompressed,
+    equal: text === decompressed
+  }
+);
